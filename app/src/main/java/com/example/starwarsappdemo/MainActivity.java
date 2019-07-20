@@ -8,7 +8,7 @@ import android.widget.ListView;
 public class MainActivity extends AppCompatActivity
 {
 
-    boolean loaded = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -17,22 +17,31 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ListView listview = (ListView) findViewById(R.id.listView);
-
-        //show a splash screen
+        //show splash screen
 
 
 
 
-
-        //load the data
-
+        //load the data from the api
 
 
 
+        //go to next list activity
 
 
-        loaded = true;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -42,6 +51,12 @@ public class MainActivity extends AppCompatActivity
     protected void onStart()
     {
         super.onStart();
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
     }
 
     @Override
