@@ -1,5 +1,8 @@
 package com.example.starwarsappdemo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 public class StarWarsResponse {
@@ -44,7 +47,7 @@ public class StarWarsResponse {
         this.results = results;
     }
 
-    public static class ResultsBean {
+    public static class ResultsBean implements Parcelable {
 
 
         private String title;
@@ -61,6 +64,58 @@ public class StarWarsResponse {
         private List<String> starships;
         private List<String> vehicles;
         private List<String> species;
+
+        protected ResultsBean(Parcel in) {
+            title = in.readString();
+            episode_id = in.readInt();
+            opening_crawl = in.readString();
+            director = in.readString();
+            producer = in.readString();
+            release_date = in.readString();
+            created = in.readString();
+            edited = in.readString();
+            url = in.readString();
+            characters = in.createStringArrayList();
+            planets = in.createStringArrayList();
+            starships = in.createStringArrayList();
+            vehicles = in.createStringArrayList();
+            species = in.createStringArrayList();
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(title);
+            dest.writeInt(episode_id);
+            dest.writeString(opening_crawl);
+            dest.writeString(director);
+            dest.writeString(producer);
+            dest.writeString(release_date);
+            dest.writeString(created);
+            dest.writeString(edited);
+            dest.writeString(url);
+            dest.writeStringList(characters);
+            dest.writeStringList(planets);
+            dest.writeStringList(starships);
+            dest.writeStringList(vehicles);
+            dest.writeStringList(species);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public static final Creator<ResultsBean> CREATOR = new Creator<ResultsBean>() {
+            @Override
+            public ResultsBean createFromParcel(Parcel in) {
+                return new ResultsBean(in);
+            }
+
+            @Override
+            public ResultsBean[] newArray(int size) {
+                return new ResultsBean[size];
+            }
+        };
 
         public String getTitle() {
             return title;

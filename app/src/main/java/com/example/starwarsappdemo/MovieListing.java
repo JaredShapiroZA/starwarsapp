@@ -2,6 +2,7 @@ package com.example.starwarsappdemo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -32,16 +33,20 @@ public class MovieListing extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movies);
 
-        //binds the data to the list
+        //gets the response String from the Intent that was passed by the Main Activity
 
         Intent intent = getIntent();
 
         String responseString = intent.getStringExtra("data");
 
+        //Initializes and declares a new Gson object which is used to map the String to our StarWarsResponse Object
+
         gson = new Gson();
         responseObject = gson.fromJson(responseString, StarWarsResponse.class);
 
-        List<StarWarsResponse.ResultsBean> unsortedList = responseObject.getResults();
+        //Gets only the unordered movie list
+
+        final List<StarWarsResponse.ResultsBean> unsortedList = responseObject.getResults();
 
         //order unsortedList into sortedList
 
@@ -50,9 +55,11 @@ public class MovieListing extends AppCompatActivity {
 
 
 
-
+        //Makes an adapter based on this Context and the now sorted list
 
         adapter = new CustomAdapter(MovieListing.this, unsortedList);
+
+        //Initializes the list view and sets the adapter to it
 
         listView = findViewById(R.id.movieList);
         listView.setAdapter(adapter);
@@ -64,12 +71,15 @@ public class MovieListing extends AppCompatActivity {
 
                 choice = i;
 
-                Toast.makeText(MovieListing.this, choice+"", Toast.LENGTH_SHORT).show();
-
-
                 //Send through the StarWarsResponse ResultsBean Object that corresponds to the choice
 
+
+                StarWarsResponse.ResultsBean movieChoice = unsortedList.get(choice);
+
+                Toast.makeText(MovieListing.this, movieChoice.getTitle(), Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(view.getContext(), FilmEntry.class);
+                intent.putExtra("object", movieChoice);
                 startActivity(intent);
 
 
