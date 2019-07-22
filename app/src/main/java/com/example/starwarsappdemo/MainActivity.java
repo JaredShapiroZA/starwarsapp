@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity
 
         Toast.makeText(this, "Created", Toast.LENGTH_SHORT).show();
 
-
+        //TODO: CHANGE TO USING ASYNCTASK AND DOWNLOAD FROM ALL RELEVANT APIS
 
         client = new AsyncHttpClient();
 
