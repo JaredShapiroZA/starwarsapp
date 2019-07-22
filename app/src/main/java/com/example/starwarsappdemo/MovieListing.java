@@ -2,6 +2,8 @@ package com.example.starwarsappdemo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -15,6 +17,8 @@ public class MovieListing extends AppCompatActivity {
     StarWarsResponse responseObject;
     CustomAdapter adapter;
     Gson gson;
+
+    private static int choice;
 
 
     @Override
@@ -37,6 +41,26 @@ public class MovieListing extends AppCompatActivity {
 
         listView = findViewById(R.id.movieList);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+            {
+
+                choice = i;
+
+                Toast.makeText(MovieListing.this, choice+"", Toast.LENGTH_SHORT).show();
+
+
+                //Send through the StarWarsResponse ResultsBean Object that corresponds to the choice
+
+                Intent intent = new Intent(view.getContext(), FilmEntry.class);
+                startActivity(intent);
+
+
+
+            }
+        });
 
 
     }

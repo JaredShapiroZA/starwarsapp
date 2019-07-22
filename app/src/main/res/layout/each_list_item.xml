@@ -12,19 +12,63 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/icon"
+        android:fontFamily="sans-serif"
+        android:text="Dummy Title"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:layout_marginTop="5dp"
         android:layout_toRightOf="@id/icon"
         android:text="Text View 1" />
 
     <TextView
-        android:id="@+id/details"
-        android:layout_marginTop="20dp"
+        android:id="@+id/textViewDirector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/date"
+        android:layout_marginTop="20dp"
         android:layout_toRightOf="@id/icon"
-        android:layout_below="@id/title"
+        android:fontFamily="sans-serif-condensed-light"
+        android:text="DIRECTOR" />
+
+    <TextView
+        android:id="@+id/director"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewDirector"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/icon"
+        android:fontFamily="sans-serif-black"
+        android:text="Text View 1" />
+
+    <TextView
+        android:id="@+id/textViewProducer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/director"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/icon"
+        android:fontFamily="sans-serif-condensed-light"
+        android:text="PRODUCERS" />
+
+    <TextView
+        android:id="@+id/producer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewProducer"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_toRightOf="@id/icon"
+        android:fontFamily="sans-serif-black"
         android:text="Text View 1" />
 
 

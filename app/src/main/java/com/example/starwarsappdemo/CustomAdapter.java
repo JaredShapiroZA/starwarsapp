@@ -49,11 +49,16 @@ public class CustomAdapter extends BaseAdapter
 
         ImageView thumbnail = rowView.findViewById(R.id.icon);
         TextView title = rowView.findViewById(R.id.title);
-        TextView details = rowView.findViewById(R.id.details);
+        TextView date = rowView.findViewById(R.id.date);
+        TextView director = rowView.findViewById(R.id.director);
+        TextView producer = rowView.findViewById(R.id.producer);
+
 
         //String imageUrl
         title.setText(item.getTitle());
-        details.setText(item.getDirector());
+        date.setText(item.getRelease_date());
+        director.setText(item.getDirector());
+        producer.setText(item.getProducer());
 
 
         return rowView;

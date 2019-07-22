@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity
     Gson gson;
     AsyncHttpClient client;
 
-    TextView t1;
+
 
 
 
