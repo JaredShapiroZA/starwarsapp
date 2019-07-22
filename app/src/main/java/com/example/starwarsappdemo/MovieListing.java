@@ -53,8 +53,6 @@ public class MovieListing extends AppCompatActivity {
         Collections.sort(unsortedList, new CustomComparator());
 
 
-
-
         //Makes an adapter based on this Context and the now sorted list
 
         adapter = new CustomAdapter(MovieListing.this, unsortedList);

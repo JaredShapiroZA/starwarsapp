@@ -55,12 +55,6 @@ public class MainActivity extends AppCompatActivity
 
 
 
-
-
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -73,7 +67,6 @@ public class MainActivity extends AppCompatActivity
 
 
 
-
         client = new AsyncHttpClient();
 
         client.get(MainActivity.this, url, new AsyncHttpResponseHandler() {
@@ -81,18 +74,7 @@ public class MainActivity extends AppCompatActivity
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String responseString = new String(responseBody);
 
-                //t1 = findViewById(R.id.textView);
 
-                //t1.setText(responseString);
-
-
-
-                //gson = new Gson();
-                //responseObject = gson.fromJson(responseString, StarWarsResponse.class);
-
-
-                //adapter = new CustomAdapter(MainActivity.this, responseObject.getResults());
-                //listview.setAdapter(adapter);
 
                 Intent intent = new Intent(MainActivity.this, MovieListing.class);
                 intent.putExtra("data", responseString);
@@ -113,7 +95,6 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        //new LoadData().execute(url);
 
 
 
