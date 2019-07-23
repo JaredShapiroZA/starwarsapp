@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -33,29 +34,23 @@ public class MovieListing extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movies);
 
-        //gets the response String from the Intent that was passed by the Main Activity
+        Bundle extras = getIntent().getExtras();
+        ArrayList arrayList = null;
 
-        Intent intent = getIntent();
+        if (extras != null) {
+            arrayList = extras.getParcelableArrayList("data");
 
-        String responseString = intent.getStringExtra("data");
+        }
+        else{
+            Toast.makeText(this, "DIDNT WORK", Toast.LENGTH_SHORT).show();
+        }
 
-        //Initializes and declares a new Gson object which is used to map the String to our StarWarsResponse Object
-
-        gson = new Gson();
-        responseObject = gson.fromJson(responseString, StarWarsResponse.class);
-
-        //Gets only the unordered movie list
-
-        final List<StarWarsResponse.ResultsBean> unsortedList = responseObject.getResults();
-
-        //order unsortedList into sortedList
-
-        Collections.sort(unsortedList, new CustomComparator());
+        final List<StarWarsResponse.ResultsBean> resultList = arrayList;
 
 
         //Makes an adapter based on this Context and the now sorted list
 
-        adapter = new CustomAdapter(MovieListing.this, unsortedList);
+        adapter = new CustomAdapter(MovieListing.this, resultList);
 
         //Initializes the list view and sets the adapter to it
 
@@ -72,7 +67,7 @@ public class MovieListing extends AppCompatActivity {
                 //Send through the StarWarsResponse ResultsBean Object that corresponds to the choice
 
 
-                StarWarsResponse.ResultsBean movieChoice = unsortedList.get(choice);
+                StarWarsResponse.ResultsBean movieChoice = resultList.get(choice);
 
                 Toast.makeText(MovieListing.this, movieChoice.getTitle(), Toast.LENGTH_SHORT).show();
 
