@@ -71,6 +71,8 @@ public class FilmEntry extends AppCompatActivity {
             }
         }
 
+        Toast.makeText(this, "SIZE IS " + resultList.size(), Toast.LENGTH_SHORT).show();
+
 
 
         entryTitle.setText(film.getTitle());

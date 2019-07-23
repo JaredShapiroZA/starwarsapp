@@ -70,7 +70,16 @@ public class MainActivity extends AppCompatActivity
     List<StarWarsResponse.ResultsBean> movieList;
     List<CharacterResponse.ResultsBean> characterList;
 
+    ArrayList<CharacterResponse.ResultsBean> arrayCharacterList;
+
     TextView t;
+
+    URL tempURL;
+    String tempURLString;
+
+    String test;
+
+    List<CharacterResponse.ResultsBean> temp;
 
 
 
@@ -151,8 +160,6 @@ public class MainActivity extends AppCompatActivity
 
                 movieList = unsortedList;
 
-
-
                 urlConnection.disconnect();
 
             } catch (Exception e) {
@@ -169,11 +176,11 @@ public class MainActivity extends AppCompatActivity
                 BufferedReader bufferedReader2 = new BufferedReader(new InputStreamReader(stream2));
                 StringBuilder builder2 = new StringBuilder();
 
-                String inputString;
+                String inputString2;
 
-                while ((inputString = bufferedReader2.readLine()) != null)
+                while ((inputString2 = bufferedReader2.readLine()) != null)
                 {
-                    builder2.append(inputString);
+                    builder2.append(inputString2);
                 }
 
 
@@ -181,21 +188,81 @@ public class MainActivity extends AppCompatActivity
                 //Initializes and declares a new Gson object which is used to map the String to our StarWarsResponse Object
 
                 gson = new Gson();
+
+
+
                 characterResponse = gson.fromJson(builder2.toString(), CharacterResponse.class);
 
-                //Gets only the unordered movie list
-
-                final List<CharacterResponse.ResultsBean> unsortedList2 = characterResponse.getResults();
 
 
 
+                List<CharacterResponse.ResultsBean> tempList = characterResponse.getResults();
 
+                arrayCharacterList = new ArrayList<>(tempList);
+
+                String nextUrl = gson.fromJson(builder2.toString(), CharacterResponse.class).getNext();
+
+                urlConnection2.disconnect();
+
+
+                tempURLString = nextUrl;
+                tempURL = new URL(tempURLString);
+                HttpURLConnection tempURLConnection;
+
+
+
+
+                while(!(tempURLString.equals(null)))
+                {
+
+                    tempURLConnection = (HttpURLConnection) tempURL.openConnection();
+
+                    InputStream tempStream = new BufferedInputStream(tempURLConnection.getInputStream());
+                    BufferedReader tempBufferedReader = new BufferedReader(new InputStreamReader(tempStream));
+                    StringBuilder tempBuilder = new StringBuilder();
+
+                    String tempString;
+
+                    while ((tempString = tempBufferedReader.readLine()) != null)
+                    {
+                        tempBuilder.append(tempString);
+                    }
+
+                    Gson gson2 = new Gson();
+
+                    temp = gson2.fromJson(tempBuilder.toString(), CharacterResponse.class).getResults();
+
+                    ArrayList<CharacterResponse.ResultsBean> tempArrayCharacterList = new ArrayList<>(temp);
+
+
+
+
+
+                    arrayCharacterList.addAll(tempArrayCharacterList);
+
+                    tempURLString =  gson.fromJson(tempBuilder.toString(), CharacterResponse.class).getNext();
+
+                    tempURL = new URL(tempURLString);
+
+
+                    tempURLConnection.disconnect();
+
+
+
+
+
+                }
+
+
+
+
+                final List<CharacterResponse.ResultsBean> unsortedList2 = new ArrayList<>(arrayCharacterList);
 
                 characterList = unsortedList2;
 
 
 
-                urlConnection2.disconnect();
+
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -217,7 +284,15 @@ public class MainActivity extends AppCompatActivity
             super.onPostExecute(result);
 
             ArrayList<StarWarsResponse.ResultsBean> arrayList = new ArrayList<>(movieList);
-            ArrayList<CharacterResponse.ResultsBean> arrayList2 = new ArrayList<>(characterList);
+
+            t = findViewById(R.id.test);
+            t.setText(arrayCharacterList.size()+ " " + temp.get(0).getName());
+
+
+
+
+
+
 
             Intent intent = new Intent(MainActivity.this, MovieListing.class);
             Bundle bundle = new Bundle();
@@ -225,7 +300,7 @@ public class MainActivity extends AppCompatActivity
             bundle.putParcelableArrayList("data", arrayList);
             intent.putExtras(bundle);
 
-            bundle.putParcelableArrayList("characterData", arrayList2);
+            bundle.putParcelableArrayList("characterData", arrayCharacterList);
             intent.putExtras(bundle);
 
 
