@@ -10,6 +10,9 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FilmEntry extends AppCompatActivity {
 
     TextView entryTitle;
@@ -33,10 +36,47 @@ public class FilmEntry extends AppCompatActivity {
 
         StarWarsResponse.ResultsBean film = intent.getParcelableExtra("object");
 
+        Bundle extras = getIntent().getExtras();
+        ArrayList characterArrayList = null;
+
+        if (extras != null) {
+
+            characterArrayList = extras.getParcelableArrayList("characterData");
+
+        }
+        else{
+            Toast.makeText(this, "DIDNT WORK", Toast.LENGTH_SHORT).show();
+        }
+
+
+        final List<CharacterResponse.ResultsBean> resultList = characterArrayList;
+
+        String characterUrls = film.getCharacters().toString();
+
+        String characterText = "";
+
+        for(int i = 0; i<resultList.size(); i++)
+        {
+            if(characterUrls.contains(resultList.get(i).getUrl()))
+            {
+                if (i==0)
+                {
+                    characterText = resultList.get(i).getName();
+                }
+                else
+                {
+                    characterText = characterText + ", " + resultList.get(i).getName();
+                }
+
+            }
+        }
+
+
+
         entryTitle.setText(film.getTitle());
         entryDate.setText(film.getRelease_date());
         //get imdb score
-        entryCharacters.setText(film.getCharacters().toString());
+        entryCharacters.setText(characterText);
         entryCrawlingText.setText(film.getOpening_crawl());
 
 

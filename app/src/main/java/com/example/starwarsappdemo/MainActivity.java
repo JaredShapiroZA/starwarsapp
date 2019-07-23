@@ -58,12 +58,17 @@ import cz.msebera.android.httpclient.Header;
 public class MainActivity extends AppCompatActivity
 {
 
-    private final String url = "https://swapi.co/api/films";
+    private final String url1 = "https://swapi.co/api/films";
+    private final String url2 = "https://swapi.co/api/people";
+
+
     Gson gson;
     AsyncHttpClient client;
     StarWarsResponse responseObject;
+    CharacterResponse characterResponse;
 
     List<StarWarsResponse.ResultsBean> movieList;
+    List<CharacterResponse.ResultsBean> characterList;
 
     TextView t;
 
@@ -80,35 +85,11 @@ public class MainActivity extends AppCompatActivity
 
         Toast.makeText(this, "Created", Toast.LENGTH_SHORT).show();
 
-        //TODO: CHANGE TO USING ASYNCTASK AND DOWNLOAD FROM ALL RELEVANT APIS
-
-        new LoadData().execute(url);
 
 
+        new LoadData().execute(url1, url2);
 
 
-
-
-        //client = new AsyncHttpClient();
-
-       // client.get(MainActivity.this, url, new AsyncHttpResponseHandler() {
-            //@Override
-            //public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                //String responseString = new String(responseBody);
-
-
-                //Intent intent = new Intent(MainActivity.this, MovieListing.class);
-                //intent.putExtra("data", responseString);
-
-                //startActivity(intent);
-
-            //}
-
-            //@Override
-            //public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-            //}
-        //});
 
 
     }
@@ -177,6 +158,51 @@ public class MainActivity extends AppCompatActivity
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            try
+            {
+
+                URL url = new URL(urls[1]);
+                HttpURLConnection urlConnection2 = (HttpURLConnection) url.openConnection();
+
+                InputStream stream2 = new BufferedInputStream(urlConnection2.getInputStream());
+                BufferedReader bufferedReader2 = new BufferedReader(new InputStreamReader(stream2));
+                StringBuilder builder2 = new StringBuilder();
+
+                String inputString;
+
+                while ((inputString = bufferedReader2.readLine()) != null)
+                {
+                    builder2.append(inputString);
+                }
+
+
+
+                //Initializes and declares a new Gson object which is used to map the String to our StarWarsResponse Object
+
+                gson = new Gson();
+                characterResponse = gson.fromJson(builder2.toString(), CharacterResponse.class);
+
+                //Gets only the unordered movie list
+
+                final List<CharacterResponse.ResultsBean> unsortedList2 = characterResponse.getResults();
+
+
+
+
+
+                characterList = unsortedList2;
+
+
+
+                urlConnection2.disconnect();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+
             return complete;
         }
 
@@ -190,12 +216,19 @@ public class MainActivity extends AppCompatActivity
 
             super.onPostExecute(result);
 
-            ArrayList<StarWarsResponse.ResultsBean> arrayList = new ArrayList<StarWarsResponse.ResultsBean>(movieList);
+            ArrayList<StarWarsResponse.ResultsBean> arrayList = new ArrayList<>(movieList);
+            ArrayList<CharacterResponse.ResultsBean> arrayList2 = new ArrayList<>(characterList);
 
             Intent intent = new Intent(MainActivity.this, MovieListing.class);
             Bundle bundle = new Bundle();
+
             bundle.putParcelableArrayList("data", arrayList);
             intent.putExtras(bundle);
+
+            bundle.putParcelableArrayList("characterData", arrayList2);
+            intent.putExtras(bundle);
+
+
             startActivity(intent);
 
 

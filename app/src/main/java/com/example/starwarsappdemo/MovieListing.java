@@ -35,17 +35,25 @@ public class MovieListing extends AppCompatActivity {
         setContentView(R.layout.movies);
 
         Bundle extras = getIntent().getExtras();
-        ArrayList arrayList = null;
+        ArrayList filmArrayList = null;
+        ArrayList characterArrayList = null;
 
         if (extras != null) {
-            arrayList = extras.getParcelableArrayList("data");
+            filmArrayList = extras.getParcelableArrayList("data");
+            characterArrayList = extras.getParcelableArrayList("characterData");
 
         }
         else{
             Toast.makeText(this, "DIDNT WORK", Toast.LENGTH_SHORT).show();
         }
 
-        final List<StarWarsResponse.ResultsBean> resultList = arrayList;
+
+
+        final List<StarWarsResponse.ResultsBean> resultList = filmArrayList;
+
+
+
+
 
 
         //Makes an adapter based on this Context and the now sorted list
@@ -56,6 +64,8 @@ public class MovieListing extends AppCompatActivity {
 
         listView = findViewById(R.id.movieList);
         listView.setAdapter(adapter);
+
+        final ArrayList finalCharacterArrayList = characterArrayList;
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -72,7 +82,13 @@ public class MovieListing extends AppCompatActivity {
                 Toast.makeText(MovieListing.this, movieChoice.getTitle(), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(view.getContext(), FilmEntry.class);
+                Bundle bundle = new Bundle();
+
                 intent.putExtra("object", movieChoice);
+
+                bundle.putParcelableArrayList("characterData", finalCharacterArrayList);
+                intent.putExtras(bundle);
+
                 startActivity(intent);
 
 
