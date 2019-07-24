@@ -8,8 +8,6 @@ import java.util.List;
 public class StarWarsResponse {
 
 
-
-
     private int count;
     private Object next;
     private Object previous;

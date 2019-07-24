@@ -37,23 +37,20 @@ public class MovieListing extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         ArrayList filmArrayList = null;
         ArrayList characterArrayList = null;
+        ArrayList imdbRatingArrayList = null;
 
         if (extras != null) {
             filmArrayList = extras.getParcelableArrayList("data");
             characterArrayList = extras.getParcelableArrayList("characterData");
-
+            imdbRatingArrayList = extras.getParcelableArrayList("ratingData");
         }
         else{
-            Toast.makeText(this, "DIDNT WORK", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "DIDN'T WORK", Toast.LENGTH_SHORT).show();
         }
 
 
 
         final List<StarWarsResponse.ResultsBean> resultList = filmArrayList;
-
-
-
-
 
 
         //Makes an adapter based on this Context and the now sorted list
@@ -67,6 +64,8 @@ public class MovieListing extends AppCompatActivity {
 
         final ArrayList finalCharacterArrayList = characterArrayList;
 
+        final List<ImdbResponse> finalImdbRatingList = imdbRatingArrayList;
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
@@ -76,15 +75,28 @@ public class MovieListing extends AppCompatActivity {
 
                 //Send through the StarWarsResponse ResultsBean Object that corresponds to the choice
 
+                ImdbResponse response = null;
 
                 StarWarsResponse.ResultsBean movieChoice = resultList.get(choice);
 
-                Toast.makeText(MovieListing.this, movieChoice.getTitle(), Toast.LENGTH_SHORT).show();
+                for(int j = 0; j< finalImdbRatingList.size(); j++)
+                {
+                    if(finalImdbRatingList.get(j).getTitle().contains(movieChoice.getTitle()))
+                    {
+                        response = finalImdbRatingList.get(j);
+                    }
+                }
+
+
+
 
                 Intent intent = new Intent(view.getContext(), FilmEntry.class);
                 Bundle bundle = new Bundle();
 
                 intent.putExtra("object", movieChoice);
+
+                bundle.putParcelable("rating", response);
+                intent.putExtras(bundle);
 
                 bundle.putParcelableArrayList("characterData", finalCharacterArrayList);
                 intent.putExtras(bundle);

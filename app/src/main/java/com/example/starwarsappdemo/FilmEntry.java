@@ -22,6 +22,8 @@ public class FilmEntry extends AppCompatActivity {
     ImageView imdbScore;
     TextView entryCharacters;
 
+    TextView temp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +36,15 @@ public class FilmEntry extends AppCompatActivity {
         entryCharacters = findViewById(R.id.entryCharacters);
         final  TextView entryCrawlingText = findViewById(R.id.entryCrawlingText);
 
+        temp = findViewById(R.id.textView2);
+
         Intent intent = getIntent();
 
         StarWarsResponse.ResultsBean film = intent.getParcelableExtra("object");
+
+        ImdbResponse imdbResponse = intent.getParcelableExtra("rating");
+
+        double rating = imdbResponse.getRating();
 
         Bundle extras = getIntent().getExtras();
         ArrayList characterArrayList = null;
@@ -81,6 +89,8 @@ public class FilmEntry extends AppCompatActivity {
         entryDate.setText(film.getRelease_date());
         //get imdb score
         entryCharacters.setText(characterText);
+
+        temp.setText(rating+"");
 
 
         Animation starWarsAnimation= AnimationUtils.loadAnimation(getApplicationContext(), R.anim.animationfile);

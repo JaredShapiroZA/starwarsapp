@@ -17,6 +17,7 @@ public class CustomAdapter extends BaseAdapter
     private Context mContext;
     private LayoutInflater inflater;
 
+
     public CustomAdapter(Context mContext, List<StarWarsResponse.ResultsBean> mFilmList) {
         this.mContext = mContext;
         this.mFilmList = mFilmList;
@@ -47,14 +48,20 @@ public class CustomAdapter extends BaseAdapter
 
         StarWarsResponse.ResultsBean item = (StarWarsResponse.ResultsBean)getItem(i);
 
-        ImageView thumbnail = rowView.findViewById(R.id.icon);
+        ImageView filmImage = rowView.findViewById(R.id.icon);
         TextView title = rowView.findViewById(R.id.title);
         TextView date = rowView.findViewById(R.id.date);
         TextView director = rowView.findViewById(R.id.director);
         TextView producer = rowView.findViewById(R.id.producer);
 
 
-        //String imageUrl
+
+
+        if (i==0)
+        {
+            filmImage.setImageResource(R.drawable.firststarwars);
+        }
+
         title.setText(item.getTitle());
         date.setText(item.getRelease_date());
         director.setText(item.getDirector());

@@ -42,8 +42,8 @@
 
     <TextView
         android:id="@+id/entryCharacters"
-        android:layout_width="394dp"
-        android:layout_height="94dp"
+        android:layout_width="391dp"
+        android:layout_height="118dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -70,11 +70,25 @@
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="187dp"
-        android:layout_height="42dp"
+        android:layout_width="189dp"
+        android:layout_height="32dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="CHARACTERS"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/entryDate" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="168dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/entryCharacters"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/imdbScore" />
 </androidx.constraintlayout.widget.ConstraintLayout>

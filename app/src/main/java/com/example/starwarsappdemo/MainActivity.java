@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.os.SystemClock;
 import android.text.method.MovementMethod;
 import android.util.JsonReader;
 import android.widget.ListView;
@@ -52,34 +53,44 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import cz.msebera.android.httpclient.Header;
-
 
 public class MainActivity extends AppCompatActivity
 {
 
     private final String url1 = "https://swapi.co/api/films";
     private final String url2 = "https://swapi.co/api/people";
+    private final String film1 = "http://www.omdbapi.com/?t=Star+Wars+Episode+I&apikey=47b256cc";
+    private final String film2 = "http://www.omdbapi.com/?t=Star+Wars+Episode+II&apikey=47b256cc";
+    private final String film3 = "http://www.omdbapi.com/?t=Star+Wars+Episode+III&apikey=47b256cc";
+    private final String film4 = "http://www.omdbapi.com/?t=Star+Wars+Episode+IV&apikey=47b256cc";
+    private final String film5 = "http://www.omdbapi.com/?t=Star+Wars+Episode+V&apikey=47b256cc";
+    private final String film6 = "http://www.omdbapi.com/?t=Star+Wars+Episode+VI&apikey=47b256cc";
+    private final String film7 = "http://www.omdbapi.com/?t=Star+Wars+Episode+VII&apikey=47b256cc";
 
+    private Gson gson;
 
-    Gson gson;
-    AsyncHttpClient client;
-    StarWarsResponse responseObject;
-    CharacterResponse characterResponse;
+    private StarWarsResponse responseObject;
+    private CharacterResponse characterResponse;
 
-    List<StarWarsResponse.ResultsBean> movieList;
-    List<CharacterResponse.ResultsBean> characterList;
+    private List<StarWarsResponse.ResultsBean> movieList;
+    private List<CharacterResponse.ResultsBean> characterList;
 
-    ArrayList<CharacterResponse.ResultsBean> arrayCharacterList;
+    private ArrayList<CharacterResponse.ResultsBean> arrayCharacterList;
 
-    TextView t;
+    private ArrayList<ImdbResponse> imdbResponseList;
 
-    URL tempURL;
-    String tempURLString;
+    private URL tempURL;
+    private String tempURLString;
+
+    private ProgressBar mProgressBar;
+
+    private List<CharacterResponse.ResultsBean> temp;
 
     String test;
 
-    List<CharacterResponse.ResultsBean> temp;
+    TextView t1;
+
+
 
 
 
@@ -88,18 +99,15 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
 
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mProgressBar = findViewById(R.id.progressBar);
 
-        Toast.makeText(this, "Created", Toast.LENGTH_SHORT).show();
+        imdbResponseList = new ArrayList<>();
 
-
-
-        new LoadData().execute(url1, url2);
-
-
-
+        new LoadData().execute(url1, url2, film1, film2, film3, film4, film5, film6, film7);
 
     }
 
@@ -112,17 +120,16 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressBar = findViewById(R.id.progressBar);
-            progressBar.setMax(100);
+            mProgressBar.setMax(17);
         }
-
-
 
 
         @Override
         protected String doInBackground(String... urls) {
 
-            String complete = "UNDEFINED";
+            String complete = "";
+
+            int progress = 0;
 
             try
             {
@@ -141,7 +148,6 @@ public class MainActivity extends AppCompatActivity
                     builder.append(inputString);
                 }
 
-
                 //Initializes and declares a new Gson object which is used to map the String to our StarWarsResponse Object
 
                 gson = new Gson();
@@ -158,6 +164,9 @@ public class MainActivity extends AppCompatActivity
                 movieList = unsortedList;
 
                 urlConnection.disconnect();
+
+                progress++;
+                publishProgress(progress);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -180,7 +189,6 @@ public class MainActivity extends AppCompatActivity
                     builder2.append(inputString2);
                 }
 
-
                 //Initializes and declares a new Gson object which is used to map the String to our StarWarsResponse Object
 
                 gson = new Gson();
@@ -192,10 +200,12 @@ public class MainActivity extends AppCompatActivity
 
                 arrayCharacterList = new ArrayList<>(tempList);
 
+                progress++;
+                publishProgress(progress);
+
                 String nextUrl = gson.fromJson(builder2.toString(), CharacterResponse.class).getNext();
 
                 urlConnection2.disconnect();
-
 
                 tempURLString = nextUrl;
                 tempURL = new URL(tempURLString);
@@ -229,19 +239,276 @@ public class MainActivity extends AppCompatActivity
 
                     tempURLString =  gson.fromJson(tempBuilder.toString(), CharacterResponse.class).getNext();
 
-                    tempURL = new URL(tempURLString);
+                    if(tempURLString!=null) {
+                        tempURL = new URL(tempURLString);
+                    }
 
+                    progress++;
+                    publishProgress(progress);
 
                     tempURLConnection.disconnect();
-
 
                 }
 
 
-                final List<CharacterResponse.ResultsBean> unsortedList2 = new ArrayList<>(arrayCharacterList);
 
-                characterList = unsortedList2;
 
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try
+            {
+
+                URL url = new URL(urls[2]);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
+                StringBuilder builder = new StringBuilder();
+
+                String inputString;
+
+                while ((inputString = bufferedReader.readLine()) != null)
+                {
+                    builder.append(inputString);
+                }
+
+
+                JSONObject film = new JSONObject(builder.toString());
+
+                double rating = Double.parseDouble(film.get("imdbRating")+"");
+                String title = film.get("Title")+"";
+
+                test = title;
+
+                ImdbResponse response = new ImdbResponse(rating, title);
+
+                imdbResponseList.add(response);
+                urlConnection.disconnect();
+
+                progress++;
+                publishProgress(progress);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try
+            {
+
+                URL url = new URL(urls[3]);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
+                StringBuilder builder = new StringBuilder();
+
+                String inputString;
+
+                while ((inputString = bufferedReader.readLine()) != null)
+                {
+                    builder.append(inputString);
+                }
+
+
+                JSONObject film = new JSONObject(builder.toString());
+
+                double rating = Double.parseDouble(film.get("imdbRating")+"");
+                String title = film.get("Title")+"";
+
+                ImdbResponse response = new ImdbResponse(rating, title);
+
+                imdbResponseList.add(response);
+
+                urlConnection.disconnect();
+
+                progress++;
+                publishProgress(progress);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try
+            {
+
+                URL url = new URL(urls[4]);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
+                StringBuilder builder = new StringBuilder();
+
+                String inputString;
+
+                while ((inputString = bufferedReader.readLine()) != null)
+                {
+                    builder.append(inputString);
+                }
+
+
+                JSONObject film = new JSONObject(builder.toString());
+
+                double rating = Double.parseDouble(film.get("imdbRating")+"");
+                String title = film.get("Title")+"";
+
+                ImdbResponse response = new ImdbResponse(rating, title);
+
+                imdbResponseList.add(response);
+
+                urlConnection.disconnect();
+
+                progress++;
+                publishProgress(progress);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try
+            {
+
+                URL url = new URL(urls[5]);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
+                StringBuilder builder = new StringBuilder();
+
+                String inputString;
+
+                while ((inputString = bufferedReader.readLine()) != null)
+                {
+                    builder.append(inputString);
+                }
+
+
+                JSONObject film = new JSONObject(builder.toString());
+
+                double rating = Double.parseDouble(film.get("imdbRating")+"");
+                String title = film.get("Title")+"";
+
+                ImdbResponse response = new ImdbResponse(rating, title);
+
+                imdbResponseList.add(response);
+
+                urlConnection.disconnect();
+
+                progress++;
+                publishProgress(progress);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try
+            {
+
+                URL url = new URL(urls[6]);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
+                StringBuilder builder = new StringBuilder();
+
+                String inputString;
+
+                while ((inputString = bufferedReader.readLine()) != null)
+                {
+                    builder.append(inputString);
+                }
+
+
+                JSONObject film = new JSONObject(builder.toString());
+
+                double rating = Double.parseDouble(film.get("imdbRating")+"");
+                String title = film.get("Title")+"";
+
+                ImdbResponse response = new ImdbResponse(rating, title);
+
+                imdbResponseList.add(response);
+
+                urlConnection.disconnect();
+
+                progress++;
+                publishProgress(progress);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try
+            {
+
+                URL url = new URL(urls[7]);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
+                StringBuilder builder = new StringBuilder();
+
+                String inputString;
+
+                while ((inputString = bufferedReader.readLine()) != null)
+                {
+                    builder.append(inputString);
+                }
+
+
+                JSONObject film = new JSONObject(builder.toString());
+
+                double rating = Double.parseDouble(film.get("imdbRating")+"");
+                String title = film.get("Title")+"";
+
+                ImdbResponse response = new ImdbResponse(rating, title);
+
+                imdbResponseList.add(response);
+
+                urlConnection.disconnect();
+
+                progress++;
+                publishProgress(progress);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try
+            {
+
+                URL url = new URL(urls[8]);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                InputStream stream = new BufferedInputStream(urlConnection.getInputStream());
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
+                StringBuilder builder = new StringBuilder();
+
+                String inputString;
+
+                while ((inputString = bufferedReader.readLine()) != null)
+                {
+                    builder.append(inputString);
+                }
+
+
+                JSONObject film = new JSONObject(builder.toString());
+
+                double rating = Double.parseDouble(film.get("imdbRating")+"");
+                String title = film.get("Title")+"";
+
+                test = title;
+
+                ImdbResponse response = new ImdbResponse(rating, title);
+
+                imdbResponseList.add(response);
+
+                urlConnection.disconnect();
+
+                progress++;
+                publishProgress(progress);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -255,9 +522,8 @@ public class MainActivity extends AppCompatActivity
         protected void onProgressUpdate(Integer... values)
         {
 
-            //TODO UPDATE PROGRESS BAR
+            mProgressBar.setProgress(values[0]);
 
-            progressBar.setProgress(values[0]);
         }
 
         protected void onPostExecute(String result)
@@ -267,14 +533,17 @@ public class MainActivity extends AppCompatActivity
 
             ArrayList<StarWarsResponse.ResultsBean> arrayList = new ArrayList<>(movieList);
 
-            t = findViewById(R.id.test);
-            t.setText(arrayCharacterList.size()+ " " + temp.get(0).getName());
+
+
+            t1 = findViewById(R.id.textView);
 
 
 
 
 
-            //TODO SEND THROUGH STAR WARS IMAGES AND IMDB REVIEWS
+
+
+            //TODO SEND THROUGH STAR WARS IMAGES
 
             Intent intent = new Intent(MainActivity.this, MovieListing.class);
             Bundle bundle = new Bundle();
@@ -285,13 +554,13 @@ public class MainActivity extends AppCompatActivity
             bundle.putParcelableArrayList("characterData", arrayCharacterList);
             intent.putExtras(bundle);
 
+            t1.setText(test);
+
+            bundle.putParcelableArrayList("ratingData", imdbResponseList);
+            intent.putExtras(bundle);
+
 
             startActivity(intent);
-
-
-
-
-
 
 
 
@@ -312,7 +581,6 @@ public class MainActivity extends AppCompatActivity
     {
         super.onStart();
 
-        Toast.makeText(this, "Started", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -321,7 +589,6 @@ public class MainActivity extends AppCompatActivity
     {
         super.onResume();
 
-        Toast.makeText(this, "Resumed", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -329,7 +596,6 @@ public class MainActivity extends AppCompatActivity
     {
         super.onPause();
 
-        Toast.makeText(this, "Paused", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -337,7 +603,6 @@ public class MainActivity extends AppCompatActivity
     {
         super.onStop();
 
-        Toast.makeText(this, "Stopped", Toast.LENGTH_SHORT).show();
     }
 
     @Override
