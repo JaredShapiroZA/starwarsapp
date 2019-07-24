@@ -292,7 +292,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
-
+            //TODO SEND THROUGH STAR WARS IMAGES AND IMDB REVIEWS
 
             Intent intent = new Intent(MainActivity.this, MovieListing.class);
             Bundle bundle = new Bundle();
