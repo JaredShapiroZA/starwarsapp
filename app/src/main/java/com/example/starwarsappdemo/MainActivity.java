@@ -119,8 +119,6 @@ public class MainActivity extends AppCompatActivity
 
 
 
-
-
         @Override
         protected String doInBackground(String... urls) {
 
@@ -142,7 +140,6 @@ public class MainActivity extends AppCompatActivity
                 {
                     builder.append(inputString);
                 }
-
 
 
                 //Initializes and declares a new Gson object which is used to map the String to our StarWarsResponse Object
@@ -184,16 +181,11 @@ public class MainActivity extends AppCompatActivity
                 }
 
 
-
                 //Initializes and declares a new Gson object which is used to map the String to our StarWarsResponse Object
 
                 gson = new Gson();
 
-
-
                 characterResponse = gson.fromJson(builder2.toString(), CharacterResponse.class);
-
-
 
 
                 List<CharacterResponse.ResultsBean> tempList = characterResponse.getResults();
@@ -208,8 +200,6 @@ public class MainActivity extends AppCompatActivity
                 tempURLString = nextUrl;
                 tempURL = new URL(tempURLString);
                 HttpURLConnection tempURLConnection;
-
-
 
 
                 while(!(tempURLString.equals(null)))
@@ -235,9 +225,6 @@ public class MainActivity extends AppCompatActivity
                     ArrayList<CharacterResponse.ResultsBean> tempArrayCharacterList = new ArrayList<>(temp);
 
 
-
-
-
                     arrayCharacterList.addAll(tempArrayCharacterList);
 
                     tempURLString =  gson.fromJson(tempBuilder.toString(), CharacterResponse.class).getNext();
@@ -248,12 +235,7 @@ public class MainActivity extends AppCompatActivity
                     tempURLConnection.disconnect();
 
 
-
-
-
                 }
-
-
 
 
                 final List<CharacterResponse.ResultsBean> unsortedList2 = new ArrayList<>(arrayCharacterList);
@@ -261,20 +243,20 @@ public class MainActivity extends AppCompatActivity
                 characterList = unsortedList2;
 
 
-
-
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
 
 
             return complete;
         }
 
         @Override
-        protected void onProgressUpdate(Integer... values) {
+        protected void onProgressUpdate(Integer... values)
+        {
+
+            //TODO UPDATE PROGRESS BAR
+
             progressBar.setProgress(values[0]);
         }
 

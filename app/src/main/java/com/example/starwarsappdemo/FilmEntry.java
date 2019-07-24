@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +21,7 @@ public class FilmEntry extends AppCompatActivity {
     TextView entryDate;
     ImageView imdbScore;
     TextView entryCharacters;
-    TextView entryCrawlingText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +32,7 @@ public class FilmEntry extends AppCompatActivity {
         entryDate = findViewById(R.id.entryDate);
         imdbScore = findViewById(R.id.imdbScore);
         entryCharacters = findViewById(R.id.entryCharacters);
-        entryCrawlingText = findViewById(R.id.entryCrawlingText);
+        final  TextView entryCrawlingText = findViewById(R.id.entryCrawlingText);
 
         Intent intent = getIntent();
 
@@ -79,7 +81,17 @@ public class FilmEntry extends AppCompatActivity {
         entryDate.setText(film.getRelease_date());
         //get imdb score
         entryCharacters.setText(characterText);
+
+
+        Animation starWarsAnimation= AnimationUtils.loadAnimation(getApplicationContext(), R.anim.animationfile);
+
         entryCrawlingText.setText(film.getOpening_crawl());
+
+        starWarsAnimation.reset();
+
+        entryCrawlingText.setAllCaps(true);
+
+        entryCrawlingText.startAnimation(starWarsAnimation);
 
 
 
