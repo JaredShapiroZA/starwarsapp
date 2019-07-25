@@ -5,8 +5,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Gravity;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -39,7 +41,7 @@ public class FilmEntry extends AppCompatActivity {
         entryDate = findViewById(R.id.entryDate);
         imdbScore = findViewById(R.id.imdbScore);
         entryCharacters = findViewById(R.id.entryCharacters);
-        final  TextView entryCrawlingText = findViewById(R.id.entryCrawlingText);
+
 
         temp = findViewById(R.id.textView2);
 
@@ -101,7 +103,7 @@ public class FilmEntry extends AppCompatActivity {
 
         final Animation starWarsAnimation= AnimationUtils.loadAnimation(getApplicationContext(), R.anim.animationfile);
 
-        ConstraintLayout layout = findViewById(R.id.layout3);
+        ConstraintLayout layout = findViewById(R.id.layoutAnim);
 
         String[] crawlLines = film.getOpening_crawl().split("\n");
 
@@ -111,13 +113,19 @@ public class FilmEntry extends AppCompatActivity {
         {
             temp = crawlLines[i];
 
+            //TODO SET THE BOUNDS PROPERLY
+
             final TextView dynamicTextView = new TextView(this);
             dynamicTextView.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT,
                     ConstraintLayout.LayoutParams.WRAP_CONTENT));
 
             dynamicTextView.setText(temp);
 
+            dynamicTextView.setTypeface(null, Typeface.BOLD);
+
             dynamicTextView.setAllCaps(true);
+
+            dynamicTextView.setGravity(Gravity.CENTER_VERTICAL);
 
             layout.addView(dynamicTextView);
 
@@ -128,7 +136,7 @@ public class FilmEntry extends AppCompatActivity {
 
             Animation tempAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.animationfile);
 
-            tempAnimation.setStartOffset(i*300);
+            tempAnimation.setStartOffset(i*500);
 
             tempAnimation.setInterpolator(new LinearInterpolator());
 
@@ -139,31 +147,6 @@ public class FilmEntry extends AppCompatActivity {
 
 
         }
-
-
-
-
-
-
-        //Animation starWarsAnimation= AnimationUtils.loadAnimation(getApplicationContext(), R.anim.animationfile);
-
-        //entryCrawlingText.setText(film.getOpening_crawl());
-
-        //starWarsAnimation.reset();
-
-        //entryCrawlingText.setAllCaps(true);
-
-
-        //ObjectAnimator flipAnimation = ObjectAnimator.ofFloat(entryCrawlingText, "rotationX", 0.0f, 45f);
-        //flipAnimation.setDuration(1);
-        //flipAnimation.setRepeatCount(0);
-        //flipAnimation.setStartDelay(1);
-        //flipAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-
-        //flipAnimation.start();
-        //entryCrawlingText.startAnimation(starWarsAnimation);
-
-
 
 
 
