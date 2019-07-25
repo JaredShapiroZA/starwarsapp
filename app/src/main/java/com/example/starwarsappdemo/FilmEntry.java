@@ -7,9 +7,7 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Gravity;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
@@ -48,6 +46,7 @@ public class FilmEntry extends AppCompatActivity {
         StarWarsResponse.ResultsBean film = intent.getParcelableExtra("object");
 
         ImdbResponse imdbResponse = intent.getParcelableExtra("rating");
+
 
         double rating = imdbResponse.getRating();
 
@@ -92,7 +91,6 @@ public class FilmEntry extends AppCompatActivity {
 
         temp.setText(rating+"");
 
-
         ConstraintLayout layout = findViewById(R.id.layoutAnim);
 
         String[] crawlLines = film.getOpening_crawl().split("\n");
@@ -106,14 +104,18 @@ public class FilmEntry extends AppCompatActivity {
             //TODO SET THE BOUNDS PROPERLY
 
             final TextView dynamicTextView = new TextView(this);
-            dynamicTextView.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                    ConstraintLayout.LayoutParams.WRAP_CONTENT));
+            //dynamicTextView.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                    //ConstraintLayout.LayoutParams.WRAP_CONTENT));
 
             dynamicTextView.setText(temp);
 
             dynamicTextView.setTypeface(null, Typeface.BOLD);
 
             dynamicTextView.setAllCaps(true);
+
+            //dynamicTextView.setTextSize(20);
+
+            dynamicTextView.setPadding(10,0,0,0);
 
             dynamicTextView.setGravity(Gravity.CENTER_VERTICAL);
 
