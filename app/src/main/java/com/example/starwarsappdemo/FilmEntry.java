@@ -1,11 +1,16 @@
 package com.example.starwarsappdemo;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -92,16 +97,71 @@ public class FilmEntry extends AppCompatActivity {
 
         temp.setText(rating+"");
 
+        //COUNT THE NUMBER OF LINES IN CRAWL AND LOOP FOR EACH LINE ROTATE THEN SHRINK
 
-        Animation starWarsAnimation= AnimationUtils.loadAnimation(getApplicationContext(), R.anim.animationfile);
+        final Animation starWarsAnimation= AnimationUtils.loadAnimation(getApplicationContext(), R.anim.animationfile);
 
-        entryCrawlingText.setText(film.getOpening_crawl());
+        ConstraintLayout layout = findViewById(R.id.layout3);
 
-        starWarsAnimation.reset();
+        String[] crawlLines = film.getOpening_crawl().split("\n");
 
-        entryCrawlingText.setAllCaps(true);
+        String temp;
 
-        entryCrawlingText.startAnimation(starWarsAnimation);
+        for(int i = 0; i<crawlLines.length; i++)
+        {
+            temp = crawlLines[i];
+
+            final TextView dynamicTextView = new TextView(this);
+            dynamicTextView.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT));
+
+            dynamicTextView.setText(temp);
+
+            dynamicTextView.setAllCaps(true);
+
+            layout.addView(dynamicTextView);
+
+            ObjectAnimator tempFlipAnimation = ObjectAnimator.ofFloat(dynamicTextView, "rotationX", 0.0f, 45f);
+            tempFlipAnimation.setDuration(1);
+            tempFlipAnimation.setRepeatCount(0);
+            tempFlipAnimation.setStartDelay(1);
+
+            Animation tempAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.animationfile);
+
+            tempAnimation.setStartOffset(i*300);
+
+            tempAnimation.setInterpolator(new LinearInterpolator());
+
+            dynamicTextView.startAnimation(tempAnimation);
+
+            tempFlipAnimation.start();
+
+
+
+        }
+
+
+
+
+
+
+        //Animation starWarsAnimation= AnimationUtils.loadAnimation(getApplicationContext(), R.anim.animationfile);
+
+        //entryCrawlingText.setText(film.getOpening_crawl());
+
+        //starWarsAnimation.reset();
+
+        //entryCrawlingText.setAllCaps(true);
+
+
+        //ObjectAnimator flipAnimation = ObjectAnimator.ofFloat(entryCrawlingText, "rotationX", 0.0f, 45f);
+        //flipAnimation.setDuration(1);
+        //flipAnimation.setRepeatCount(0);
+        //flipAnimation.setStartDelay(1);
+        //flipAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+
+        //flipAnimation.start();
+        //entryCrawlingText.startAnimation(starWarsAnimation);
 
 
 
