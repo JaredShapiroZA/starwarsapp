@@ -59,7 +59,31 @@ public class CustomAdapter extends BaseAdapter
 
         if (i==0)
         {
-            filmImage.setImageResource(R.drawable.firststarwars);
+            filmImage.setImageResource(R.drawable.starwars1);
+        }
+        if (i==1)
+        {
+            filmImage.setImageResource(R.drawable.starwars2);
+        }
+        if (i==2)
+        {
+            filmImage.setImageResource(R.drawable.starwars3);
+        }
+        if (i==3)
+        {
+            filmImage.setImageResource(R.drawable.starwars4);
+        }
+        if (i==4)
+        {
+            filmImage.setImageResource(R.drawable.starwars5);
+        }
+        if (i==5)
+        {
+            filmImage.setImageResource(R.drawable.starwars6);
+        }
+        if (i==6)
+        {
+            filmImage.setImageResource(R.drawable.starwars7);
         }
 
         title.setText(item.getTitle());

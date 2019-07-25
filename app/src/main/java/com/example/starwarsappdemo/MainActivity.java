@@ -86,9 +86,9 @@ public class MainActivity extends AppCompatActivity
 
     private List<CharacterResponse.ResultsBean> temp;
 
-    String test;
 
-    TextView t1;
+
+
 
 
 
@@ -282,7 +282,7 @@ public class MainActivity extends AppCompatActivity
                 double rating = Double.parseDouble(film.get("imdbRating")+"");
                 String title = film.get("Title")+"";
 
-                test = title;
+
 
                 ImdbResponse response = new ImdbResponse(rating, title);
 
@@ -499,7 +499,7 @@ public class MainActivity extends AppCompatActivity
                 double rating = Double.parseDouble(film.get("imdbRating")+"");
                 String title = film.get("Title")+"";
 
-                test = title;
+
 
                 ImdbResponse response = new ImdbResponse(rating, title);
 
@@ -535,16 +535,6 @@ public class MainActivity extends AppCompatActivity
 
 
 
-            t1 = findViewById(R.id.textView);
-
-
-
-
-
-
-
-            //TODO SEND THROUGH STAR WARS IMAGES
-
             Intent intent = new Intent(MainActivity.this, MovieListing.class);
             Bundle bundle = new Bundle();
 
@@ -554,7 +544,7 @@ public class MainActivity extends AppCompatActivity
             bundle.putParcelableArrayList("characterData", arrayCharacterList);
             intent.putExtras(bundle);
 
-            t1.setText(test);
+
 
             bundle.putParcelableArrayList("ratingData", imdbResponseList);
             intent.putExtras(bundle);
