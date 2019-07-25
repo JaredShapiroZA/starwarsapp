@@ -2,31 +2,22 @@ package com.example.starwarsappdemo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class MovieListing extends AppCompatActivity {
 
     public ListView listView;
-    StarWarsResponse responseObject;
     CustomAdapter adapter;
-    Gson gson;
 
     private static int choice;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,10 +39,7 @@ public class MovieListing extends AppCompatActivity {
             Toast.makeText(this, "DIDN'T WORK", Toast.LENGTH_SHORT).show();
         }
 
-
-
         final List<StarWarsResponse.ResultsBean> resultList = filmArrayList;
-
 
         //Makes an adapter based on this Context and the now sorted list
 
@@ -87,9 +75,6 @@ public class MovieListing extends AppCompatActivity {
                     }
                 }
 
-
-
-
                 Intent intent = new Intent(view.getContext(), FilmEntry.class);
                 Bundle bundle = new Bundle();
 
@@ -103,12 +88,8 @@ public class MovieListing extends AppCompatActivity {
 
                 startActivity(intent);
 
-
-
             }
         });
-
-
     }
 
     private class CustomComparator implements Comparator<StarWarsResponse.ResultsBean>
@@ -119,6 +100,5 @@ public class MovieListing extends AppCompatActivity {
             return o1.getRelease_date().compareTo(o2.getRelease_date());
         }
     }
-
 
 }

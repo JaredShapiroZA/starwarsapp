@@ -8,9 +8,6 @@ import java.util.List;
 public class CharacterResponse
 {
 
-
-
-
     private int count;
     private String next;
     private Object previous;

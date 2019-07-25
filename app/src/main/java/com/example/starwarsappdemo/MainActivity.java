@@ -1,49 +1,14 @@
 package com.example.starwarsappdemo;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.os.SystemClock;
-import android.text.method.MovementMethod;
-import android.util.JsonReader;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
-import android.widget.Toast;
-
-
-import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.Response;
-import com.android.volley.Request;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONException;
-import org.w3c.dom.Text;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -73,10 +38,8 @@ public class MainActivity extends AppCompatActivity
     private CharacterResponse characterResponse;
 
     private List<StarWarsResponse.ResultsBean> movieList;
-    private List<CharacterResponse.ResultsBean> characterList;
 
     private ArrayList<CharacterResponse.ResultsBean> arrayCharacterList;
-
     private ArrayList<ImdbResponse> imdbResponseList;
 
     private URL tempURL;
@@ -85,14 +48,6 @@ public class MainActivity extends AppCompatActivity
     private ProgressBar mProgressBar;
 
     private List<CharacterResponse.ResultsBean> temp;
-
-
-
-
-
-
-
-
 
 
     @Override
@@ -195,7 +150,6 @@ public class MainActivity extends AppCompatActivity
 
                 characterResponse = gson.fromJson(builder2.toString(), CharacterResponse.class);
 
-
                 List<CharacterResponse.ResultsBean> tempList = characterResponse.getResults();
 
                 arrayCharacterList = new ArrayList<>(tempList);
@@ -234,7 +188,6 @@ public class MainActivity extends AppCompatActivity
 
                     ArrayList<CharacterResponse.ResultsBean> tempArrayCharacterList = new ArrayList<>(temp);
 
-
                     arrayCharacterList.addAll(tempArrayCharacterList);
 
                     tempURLString =  gson.fromJson(tempBuilder.toString(), CharacterResponse.class).getNext();
@@ -249,11 +202,6 @@ public class MainActivity extends AppCompatActivity
                     tempURLConnection.disconnect();
 
                 }
-
-
-
-
-
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -281,8 +229,6 @@ public class MainActivity extends AppCompatActivity
 
                 double rating = Double.parseDouble(film.get("imdbRating")+"");
                 String title = film.get("Title")+"";
-
-
 
                 ImdbResponse response = new ImdbResponse(rating, title);
 
@@ -312,7 +258,6 @@ public class MainActivity extends AppCompatActivity
                 {
                     builder.append(inputString);
                 }
-
 
                 JSONObject film = new JSONObject(builder.toString());
 
@@ -349,7 +294,6 @@ public class MainActivity extends AppCompatActivity
                     builder.append(inputString);
                 }
 
-
                 JSONObject film = new JSONObject(builder.toString());
 
                 double rating = Double.parseDouble(film.get("imdbRating")+"");
@@ -384,7 +328,6 @@ public class MainActivity extends AppCompatActivity
                 {
                     builder.append(inputString);
                 }
-
 
                 JSONObject film = new JSONObject(builder.toString());
 
@@ -421,7 +364,6 @@ public class MainActivity extends AppCompatActivity
                     builder.append(inputString);
                 }
 
-
                 JSONObject film = new JSONObject(builder.toString());
 
                 double rating = Double.parseDouble(film.get("imdbRating")+"");
@@ -456,7 +398,6 @@ public class MainActivity extends AppCompatActivity
                 {
                     builder.append(inputString);
                 }
-
 
                 JSONObject film = new JSONObject(builder.toString());
 
@@ -533,8 +474,6 @@ public class MainActivity extends AppCompatActivity
 
             ArrayList<StarWarsResponse.ResultsBean> arrayList = new ArrayList<>(movieList);
 
-
-
             Intent intent = new Intent(MainActivity.this, MovieListing.class);
             Bundle bundle = new Bundle();
 
@@ -544,15 +483,10 @@ public class MainActivity extends AppCompatActivity
             bundle.putParcelableArrayList("characterData", arrayCharacterList);
             intent.putExtras(bundle);
 
-
-
             bundle.putParcelableArrayList("ratingData", imdbResponseList);
             intent.putExtras(bundle);
 
-
             startActivity(intent);
-
-
 
         }
     }
@@ -606,12 +540,6 @@ public class MainActivity extends AppCompatActivity
     {
         super.onDestroy();
     }
-
-
-
-
-
-
 
 
 }

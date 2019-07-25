@@ -31,7 +31,6 @@ public class FilmEntry extends AppCompatActivity {
 
     TextView temp;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +40,6 @@ public class FilmEntry extends AppCompatActivity {
         entryDate = findViewById(R.id.entryDate);
         imdbScore = findViewById(R.id.imdbScore);
         entryCharacters = findViewById(R.id.entryCharacters);
-
 
         temp = findViewById(R.id.textView2);
 
@@ -65,7 +63,6 @@ public class FilmEntry extends AppCompatActivity {
             Toast.makeText(this, "DIDNT WORK", Toast.LENGTH_SHORT).show();
         }
 
-
         final List<CharacterResponse.ResultsBean> resultList = characterArrayList;
 
         String characterUrls = film.getCharacters().toString();
@@ -88,20 +85,13 @@ public class FilmEntry extends AppCompatActivity {
             }
         }
 
-        Toast.makeText(this, "SIZE IS " + resultList.size(), Toast.LENGTH_SHORT).show();
-
-
 
         entryTitle.setText(film.getTitle());
         entryDate.setText(film.getRelease_date());
-        //get imdb score
         entryCharacters.setText(characterText);
 
         temp.setText(rating+"");
 
-        //COUNT THE NUMBER OF LINES IN CRAWL AND LOOP FOR EACH LINE ROTATE THEN SHRINK
-
-        final Animation starWarsAnimation= AnimationUtils.loadAnimation(getApplicationContext(), R.anim.animationfile);
 
         ConstraintLayout layout = findViewById(R.id.layoutAnim);
 
@@ -144,12 +134,7 @@ public class FilmEntry extends AppCompatActivity {
 
             tempFlipAnimation.start();
 
-
-
         }
-
-
-
 
     }
 }

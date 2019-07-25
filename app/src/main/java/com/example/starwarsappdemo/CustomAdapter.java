@@ -15,8 +15,6 @@ public class CustomAdapter extends BaseAdapter
 
     private List<StarWarsResponse.ResultsBean> mFilmList;
     private Context mContext;
-    private LayoutInflater inflater;
-
 
     public CustomAdapter(Context mContext, List<StarWarsResponse.ResultsBean> mFilmList) {
         this.mContext = mContext;
@@ -43,7 +41,6 @@ public class CustomAdapter extends BaseAdapter
 
         LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-
         View rowView = inflater.inflate(R.layout.each_list_item, parent, false);
 
         StarWarsResponse.ResultsBean item = (StarWarsResponse.ResultsBean)getItem(i);
@@ -53,9 +50,6 @@ public class CustomAdapter extends BaseAdapter
         TextView date = rowView.findViewById(R.id.date);
         TextView director = rowView.findViewById(R.id.director);
         TextView producer = rowView.findViewById(R.id.producer);
-
-
-
 
         if (i==0)
         {
@@ -90,7 +84,6 @@ public class CustomAdapter extends BaseAdapter
         date.setText(item.getRelease_date());
         director.setText(item.getDirector());
         producer.setText(item.getProducer());
-
 
         return rowView;
     }
