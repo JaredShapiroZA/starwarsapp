@@ -65,15 +65,21 @@ public class FilmEntry extends AppCompatActivity {
 
         for(int i = 0; i<resultList.size(); i++)
         {
+
             if(characterUrls.contains(resultList.get(i).getUrl()))
             {
+
+                if (!(characterText.equals("")))
+                characterText = characterText + ", ";
+
+
                 if (i==0)
                 {
                     characterText = resultList.get(i).getName();
                 }
                 else
                 {
-                    characterText = characterText + ", " + resultList.get(i).getName();
+                    characterText = characterText + resultList.get(i).getName();
                 }
 
             }
