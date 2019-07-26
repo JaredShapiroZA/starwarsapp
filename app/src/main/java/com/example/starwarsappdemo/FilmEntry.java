@@ -27,8 +27,6 @@ public class FilmEntry extends AppCompatActivity {
     ImageView imdbScore;
     TextView entryCharacters;
 
-    TextView temp;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,14 +37,11 @@ public class FilmEntry extends AppCompatActivity {
         imdbScore = findViewById(R.id.imdbScore);
         entryCharacters = findViewById(R.id.entryCharacters);
 
-        temp = findViewById(R.id.textView2);
-
         Intent intent = getIntent();
 
         StarWarsResponse.ResultsBean film = intent.getParcelableExtra("object");
 
         ImdbResponse imdbResponse = intent.getParcelableExtra("rating");
-
 
         double rating = imdbResponse.getRating();
 
@@ -85,11 +80,35 @@ public class FilmEntry extends AppCompatActivity {
         }
 
 
+
+
         entryTitle.setText(film.getTitle());
         entryDate.setText(film.getRelease_date());
         entryCharacters.setText(characterText);
 
-        temp.setText(rating+"");
+        if (rating<=2)
+        {
+            imdbScore.setImageResource(R.drawable.star1);
+        }
+        else if(rating>2 && rating<=4)
+        {
+            imdbScore.setImageResource(R.drawable.star2);
+        }
+        else if (rating>4 && rating<=6)
+        {
+            imdbScore.setImageResource(R.drawable.star3);
+        }
+        else if (rating>6 && rating<=8)
+        {
+            imdbScore.setImageResource(R.drawable.star4);
+        }
+        else
+        {
+            imdbScore.setImageResource(R.drawable.star5);
+        }
+
+
+
 
         ConstraintLayout layout = findViewById(R.id.layoutAnim);
 
