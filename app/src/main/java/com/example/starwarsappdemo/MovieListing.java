@@ -92,13 +92,4 @@ public class MovieListing extends AppCompatActivity {
         });
     }
 
-    private class CustomComparator implements Comparator<StarWarsResponse.ResultsBean>
-    {
-
-        @Override
-        public int compare(StarWarsResponse.ResultsBean o1, StarWarsResponse.ResultsBean o2) {
-            return o1.getRelease_date().compareTo(o2.getRelease_date());
-        }
-    }
-
 }

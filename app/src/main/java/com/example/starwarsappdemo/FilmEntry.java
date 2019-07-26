@@ -113,9 +113,6 @@ public class FilmEntry extends AppCompatActivity {
             imdbScore.setImageResource(R.drawable.star5);
         }
 
-
-
-
         ConstraintLayout layout = findViewById(R.id.layoutAnim);
 
         String[] crawlLines = film.getOpening_crawl().split("\n");
@@ -126,11 +123,7 @@ public class FilmEntry extends AppCompatActivity {
         {
             temp = crawlLines[i];
 
-            //TODO SET THE BOUNDS PROPERLY
-
             final TextView dynamicTextView = new TextView(this);
-            //dynamicTextView.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                    //ConstraintLayout.LayoutParams.WRAP_CONTENT));
 
             dynamicTextView.setText(temp);
 
